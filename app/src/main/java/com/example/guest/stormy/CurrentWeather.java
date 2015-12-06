@@ -1,14 +1,29 @@
 package com.example.guest.stormy;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 /**
  * Created by Guest on 12/5/15.
  */
 public class CurrentWeather {
+    public String getTimeZone() {
+        return mTimeZone;
+    }
+
+    public void setTimeZone(String timeZone) {
+        mTimeZone = timeZone;
+    }
+
     private String mIcon;
     private long mTime;
     private double mTemperature;
     private double mHumidity;
     private double mPrecipChance;
+    private String mSummary;
+    private String mTimeZone;
+
 
 
     public String getIcon() {
@@ -19,8 +34,59 @@ public class CurrentWeather {
         mIcon = icon;
     }
 
+    public int getIconId() {
+
+        int iconId;
+        switch (mIcon) {
+            case "clear-day":
+                iconId = R.drawable.clear_day;
+                break;
+            case "clear-night":
+                iconId = R.drawable.clear_night;
+                break;
+            case "rain":
+                iconId = R.drawable.rain;
+                break;
+            case "snow":
+                iconId = R.drawable.snow;
+                break;
+            case "sleet":
+                iconId = R.drawable.sleet;
+                break;
+            case "wind":
+                iconId = R.drawable.wind;
+                break;
+            case "fog":
+                iconId = R.drawable.fog;
+                break;
+            case "cloudy":
+                iconId = R.drawable.cloudy;
+                break;
+            case "partly-cloudy-day":
+                iconId = R.drawable.partly_cloudy;
+                break;
+            case "partly-cloudy-night":
+                iconId = R.drawable.cloudy_night;
+                break;
+            default:
+                iconId = R.drawable.clear_day;
+                break;
+        }
+
+        return iconId;
+    }
+
     public long getTime() {
         return mTime;
+    }
+
+    public String getFormattedTime() {
+        SimpleDateFormat formatter = new SimpleDateFormat("h:mm a");
+        formatter.setTimeZone(TimeZone.getTimeZone(getTimeZone()));
+        Date dateTime = new Date(getTime() * 1000);
+        String timeString = formatter.format(dateTime);
+
+        return timeString;
     }
 
     public void setTime(long time) {
@@ -59,5 +125,5 @@ public class CurrentWeather {
         mSummary = summary;
     }
 
-    private String mSummary;
+
 }
