@@ -1,4 +1,6 @@
-package com.example.guest.stormy;
+package com.example.guest.stormy.weather;
+
+import com.example.guest.stormy.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -7,15 +9,15 @@ import java.util.TimeZone;
 /**
  * Created by Guest on 12/5/15.
  */
-public class CurrentWeather {
+public class Current {
+    //This class represents the data model
+    //adding properties we want to keep from the forecast API here
     public String getTimeZone() {
         return mTimeZone;
     }
-
     public void setTimeZone(String timeZone) {
         mTimeZone = timeZone;
     }
-
     private String mIcon;
     private long mTime;
     private double mTemperature;
