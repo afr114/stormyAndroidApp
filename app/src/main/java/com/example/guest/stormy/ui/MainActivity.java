@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     //this class represents the controller
 
     public static final String TAG = MainActivity.class.getSimpleName();
+    public static final String DAILY_FORECAST = "DAILY_FORECAST";
     private Forecast mForecast;
     @Bind(R.id.timeLabel) TextView mTimeLabel;
     @Bind(R.id.temperatureLabel) TextView mTemperatureLabel;
@@ -264,6 +265,7 @@ public class MainActivity extends AppCompatActivity {
             public void startDailyActivity() {
             //create intent and pass in context and the activity to go to when clicked
                 Intent intent = new Intent(this, DailyForecastActivity.class);
+                intent.putExtra(DAILY_FORECAST, mForecast.getDailyForecast());
             //start new activity
                 startActivity(intent);
             }
