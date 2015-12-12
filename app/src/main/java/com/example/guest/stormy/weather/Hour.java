@@ -1,9 +1,12 @@
 package com.example.guest.stormy.weather;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Guest on 12/7/15.
  */
-public class Hour {
+public class Hour implements Parcelable {
     //This class represents the data model
     //adding properties we want to keep from the forecast API.  Making the property variables private so they cannot be accessed outside of this class
 
@@ -12,6 +15,8 @@ public class Hour {
     private double mTemperature;
     private String mIcon;
     private String mTimezone;
+
+    public Hour() { }
 
     public long getTime() {
         return mTime;
@@ -52,4 +57,35 @@ public class Hour {
     public void setTimezone(String timezone) {
         mTimezone = timezone;
     }
-}
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(mTime);
+        dest.writeDouble(mTemperature);
+        dest.writeString(mSummary);
+        dest.writeString(mIcon);
+        dest.writeString(mTimezone);
+    }
+
+    private Hour(Parcel in) {
+        mTime = in.readLong();
+        mTemperature = in.readDouble();
+        mSummary = in.readString();
+        mIcon = in.readString();
+        mTimezone = in.readString();
+    }
+
+    public static final Creator<Hour> CREATOR = new Creator<Hour>(){
+
+        public Hour createFromParcel(Parcel source) { return new Hour(source); }
+
+        public Hour[] newArray(int size) { return new Hour[size]; }
+    };
+
+    }
+
