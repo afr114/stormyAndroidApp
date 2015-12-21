@@ -13,12 +13,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
+import com.example.guest.stormy.google.GooglePlayServicesHelper;
 import com.example.guest.stormy.weather.Current;
 import com.example.guest.stormy.R;
 import com.example.guest.stormy.weather.Day;
 import com.example.guest.stormy.weather.Forecast;
 import com.example.guest.stormy.weather.Hour;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
@@ -35,7 +36,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.app.PendingIntent.getActivity;
 
 public class MainActivity extends AppCompatActivity {
     //this class represents the controller
@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Forecast mForecast;
 
+
     @Bind(R.id.timeLabel) TextView mTimeLabel;
     @Bind(R.id.temperatureLabel) TextView mTemperatureLabel;
     @Bind(R.id.humidityValue) TextView mHumidityValue;
@@ -55,13 +56,15 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.refreshImageView) ImageView mRefreshImageView;
     @Bind(R.id.progressBar) ProgressBar mProgressBar;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
+        GooglePlayServicesHelper mGooglePlayServicesHelper = new GooglePlayServicesHelper(this);
         mProgressBar.setVisibility(View.INVISIBLE);
+
 
         final double latitude = 37.8267;
         final double longitude = -122.423;
