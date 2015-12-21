@@ -20,38 +20,38 @@ import com.google.android.gms.location.LocationServices;
 /**
  * Created by Guest on 12/20/15.
  */
-public class GooglePlayServicesHelper extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class GooglePlayServicesHelper implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    private Context mContext;
+    private final Activity mActivity;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private final String LOG_TAG = "TestApp";
     private Location mLocation;
 
 
-
-    //constructor
-    public GooglePlayServicesHelper(Context context) {
-        this.mContext = context;
-        buildGoogleApiClient(context);
+    public GooglePlayServicesHelper(Activity activity) {
+        this.mActivity = activity;
+        buildGoogleApiClient(mActivity);
     }
 
-    private void buildGoogleApiClient(Context context) {
-        mGoogleApiClient = new GoogleApiClient.Builder(context)
+    private void buildGoogleApiClient(Activity activity) {
+        this.mGoogleApiClient = new GoogleApiClient.Builder(activity)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
     }
 
+
     @Override
     public void onConnected(Bundle bundle) {
+        Log.d("WORKING", "TEST");
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
         mLocationRequest.setInterval(10000);
 
-        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -62,7 +62,8 @@ public class GooglePlayServicesHelper extends AppCompatActivity implements Googl
             Log.i(LOG_TAG, "Permission denied");
             return;
         }
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        //LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+         mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
     }
 
     @Override
@@ -73,6 +74,7 @@ public class GooglePlayServicesHelper extends AppCompatActivity implements Googl
     @Override
     public void onLocationChanged(Location location) {
         this.mLocation = location;
+
     }
 
     @Override
@@ -80,15 +82,12 @@ public class GooglePlayServicesHelper extends AppCompatActivity implements Googl
         Log.i(LOG_TAG, "GoogleApiClient connection has failed");
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    public void connect() {
         mGoogleApiClient.connect();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
+    public void disconnect() {
         mGoogleApiClient.disconnect();
     }
+
 }

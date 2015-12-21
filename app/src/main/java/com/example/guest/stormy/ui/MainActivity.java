@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = MainActivity.class.getSimpleName();
     public static final String DAILY_FORECAST = "DAILY_FORECAST";
     public static final String HOURLY_FORECAST = "HOURLY_FORECAST";
-
+    public GooglePlayServicesHelper mGooglePlayServicesHelper;
     private Forecast mForecast;
 
 
@@ -57,13 +57,15 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.progressBar) ProgressBar mProgressBar;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        GooglePlayServicesHelper mGooglePlayServicesHelper = new GooglePlayServicesHelper(this);
-        //mGooglePlayServicesHelper.
+       mGooglePlayServicesHelper = new GooglePlayServicesHelper(this);
+
         mProgressBar.setVisibility(View.INVISIBLE);
 
 
@@ -79,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
         getForecast(latitude, longitude);
     }
+
 
     //Get Forecast method that captures JSON data from a third party HTTP client.
     // If capture is successful then calls onResponse method through the enqueue, otherwise calls onFailure method
@@ -282,6 +285,17 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, HourlyForecastActivity.class);
             intent.putExtra(HOURLY_FORECAST, mForecast.getHourlyForecast());
             startActivity(intent);
-
         }
+
+    @Override
+    protected void onStart() {
+        mGooglePlayServicesHelper.connect();
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mGooglePlayServicesHelper.disconnect();
+    }
 }
