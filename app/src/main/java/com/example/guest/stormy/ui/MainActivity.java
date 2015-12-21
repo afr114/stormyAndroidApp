@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         GooglePlayServicesHelper mGooglePlayServicesHelper = new GooglePlayServicesHelper(this);
+        //mGooglePlayServicesHelper.
         mProgressBar.setVisibility(View.INVISIBLE);
 
 

@@ -3,6 +3,7 @@ package com.example.guest.stormy.google;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -21,21 +22,22 @@ import com.google.android.gms.location.LocationServices;
  */
 public class GooglePlayServicesHelper extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    private Activity activity;
+    private Context mContext;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private final String LOG_TAG = "TestApp";
     private Location mLocation;
 
 
+
     //constructor
-    public GooglePlayServicesHelper(Activity activity) {
-        this.activity = activity;
-        buildGoogleApiClient(activity);
+    public GooglePlayServicesHelper(Context context) {
+        this.mContext = context;
+        buildGoogleApiClient(context);
     }
 
-    private void buildGoogleApiClient(Activity activity) {
-        mGoogleApiClient = new GoogleApiClient.Builder(activity)
+    private void buildGoogleApiClient(Context context) {
+        mGoogleApiClient = new GoogleApiClient.Builder(context)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -48,8 +50,8 @@ public class GooglePlayServicesHelper extends AppCompatActivity implements Googl
         mLocationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
         mLocationRequest.setInterval(10000);
 
-        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
